@@ -1,0 +1,37 @@
+[package]
+name = "bootstrap"
+description = "Composition root: wiring, konfigurasi, telemetry"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+autobins = false
+
+[lib]
+name = "bootstrap"
+path = "src/lib.rs"
+
+[[bin]]
+name = "rust-clean-architecture"
+path = "src/main.rs"
+
+# Composition root boleh depend ke semua crate: di sinilah semuanya dirangkai.
+[dependencies]
+infrastructure.workspace = true
+application.workspace = true
+delivery.workspace = true
+anyhow.workspace = true
+axum.workspace = true
+clap.workspace = true
+dotenvy.workspace = true
+secrecy.workspace = true
+sqlx.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-appender.workspace = true
+tracing-subscriber.workspace = true
+tower-http.workspace = true
+
+[dev-dependencies]
+# Dipakai test integrasi untuk asserting nilai `created_at` hasil rekonsiliasi.
+chrono.workspace = true

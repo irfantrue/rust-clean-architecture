@@ -1,0 +1,15 @@
+[package]
+name = "domain"
+description = "Entitas, aturan bisnis, dan port repository"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+# Bukti aturan dependency: tidak ada crate internal sama sekali di sini.
+# Domain tidak boleh tahu-menahu media penyimpanan, HTTP, atau hashing.
+[dependencies]
+async-trait.workspace = true
+chrono.workspace = true
+secrecy.workspace = true
+thiserror.workspace = true
+uuid.workspace = true

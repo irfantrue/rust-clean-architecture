@@ -1,0 +1,22 @@
+[package]
+name = "delivery"
+description = "http"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+domain.workspace = true
+application.workspace = true
+axum.workspace = true
+anyhow.workspace = true
+tokio.workspace = true
+tower-http.workspace = true
+tower.workspace = true
+serde.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+secrecy.workspace = true
+tracing.workspace = true
+thiserror.workspace = true
+validator = { version = "0.20", features = ["derive"] }
