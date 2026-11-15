@@ -1,11 +1,7 @@
 use super::RepositoryError;
-use domain::error::EmailError;
 
 #[derive(Debug, thiserror::Error)]
 pub enum CheckEmailAvailabilityError {
-    #[error(transparent)]
-    InvalidEmail(#[from] EmailError),
-
     #[error("storage failure")]
     Storage(#[source] anyhow::Error),
 }

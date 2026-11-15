@@ -38,12 +38,6 @@ pub fn email_message(e: EmailError) -> &'static str {
 impl From<CheckEmailAvailabilityError> for ApiError {
     fn from(e: CheckEmailAvailabilityError) -> Self {
         match e {
-            CheckEmailAvailabilityError::InvalidEmail(err) => {
-                ApiError::UnprocessableEntity(vec![FieldError {
-                    field: "email".into(),
-                    message: email_message(err).into(),
-                }])
-            }
             CheckEmailAvailabilityError::Storage(err) => ApiError::Internal(err),
         }
     }
