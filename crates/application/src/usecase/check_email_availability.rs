@@ -5,7 +5,7 @@ use tracing::instrument;
 use crate::{error::CheckEmailAvailabilityError, port::UserRepository};
 
 pub struct CheckEmailAvailabilityCommand {
-    pub email: String,
+    pub email: Email,
 }
 
 pub struct CheckEmailAvailabilityUseCase {
@@ -21,9 +21,7 @@ impl CheckEmailAvailabilityUseCase {
 
     #[instrument(name = "check email availability", skip_all, fields(email = tracing::field::Empty))]
     pub async fn execute(&self, cmd: CheckEmailAvailabilityCommand) -> Result<bool> {
-        let email = Email::parse(&cmd.email)?;
-
-        let exists = self.user_repo.exists_by_email(&email).await?;
+        let exists = self.user_repo.exists_by_email(&cmd.email).await?;
 
         Ok(exists)
     }

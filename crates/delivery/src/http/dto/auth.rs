@@ -1,6 +1,12 @@
 use application::usecase::check_email_availability::CheckEmailAvailabilityCommand;
+use domain::error::Email;
 use serde::{Deserialize, Serialize};
 use validator::Validate;
+
+use crate::http::{
+    error::{ApiError, email_message},
+    problem::FieldError,
+};
 
 #[derive(Debug, Clone, Deserialize, Validate)]
 pub struct CheckEmailAvailabilityRequest {
@@ -11,9 +17,18 @@ pub struct CheckEmailAvailabilityRequest {
     email: String,
 }
 
-impl From<CheckEmailAvailabilityRequest> for CheckEmailAvailabilityCommand {
-    fn from(req: CheckEmailAvailabilityRequest) -> Self {
-        Self { email: req.email }
+impl TryFrom<CheckEmailAvailabilityRequest> for CheckEmailAvailabilityCommand {
+    type Error = ApiError;
+
+    fn try_from(req: CheckEmailAvailabilityRequest) -> Result<Self, Self::Error> {
+        let email = Email::parse(&req.email).map_err(|e| {
+            ApiError::UnprocessableEntity(vec![FieldError {
+                field: "email".into(),
+                message: email_message(e).into(),
+            }])
+        })?;
+
+        Ok(Self { email })
     }
 }
 

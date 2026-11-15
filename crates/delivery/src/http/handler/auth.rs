@@ -1,3 +1,4 @@
+use application::usecase::check_email_availability::CheckEmailAvailabilityCommand;
 use axum::{extract::State, response::IntoResponse};
 use tracing::instrument;
 
@@ -16,7 +17,10 @@ pub async fn check_email_availability(
     State(state): State<ApplicationState>,
     ValidatedJson(req): ValidatedJson<CheckEmailAvailabilityRequest>,
 ) -> Result<impl IntoResponse, ApiError> {
-    let available = state.check_email_availability.execute(req.into()).await?;
+    let cmd = CheckEmailAvailabilityCommand::try_from(req)?;
+
+    let available = state.check_email_availability.execute(cmd).await?;
+
     Ok(ApiResponse::ok(CheckEmailAvailabilityResponse::from(
         available,
     )))
